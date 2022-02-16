@@ -1,10 +1,53 @@
 <template>
-  <v-treeview :items="items"></v-treeview>
+  <v-row class="px-5">
+    <v-col cols="4">
+      <div class="mb-2">
+        <h3>サイドメニュー</h3>
+      </div>
+      <v-card>
+        <v-treeview selectable :items="items"> </v-treeview>
+      </v-card>
+    </v-col>
+    <v-col cols="8">
+      <div class="mb-2">
+        <h3>メインメニュー</h3>
+      </div>
+      <v-card>
+        <v-data-table
+          :headers="headers"
+          :items="displayItems"
+          hide-default-footer
+          disable-sort
+          disable-pagination
+        >
+          <template v-slot:[`item.delete`]="{ item }">
+            <v-btn small color="error" @click="deleteItem(item)"> 削除 </v-btn>
+          </template>
+        </v-data-table>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
 export default {
   data: () => ({
+    headers: [
+      {
+        text: "ID",
+        value: "id",
+      },
+      {
+        text: "名前",
+        value: "name",
+      },
+      {
+        text: "削除",
+        value: "delete",
+        sortable: false,
+      },
+    ],
+
     items: [
       {
         id: 1,
@@ -77,7 +120,25 @@ export default {
         ],
       },
     ],
+    displayItems: [
+      {
+        id: 1,
+        name: "Applications :",
+        children: [
+          { id: 2, name: "Calendar : app" },
+          { id: 3, name: "Chrome : app" },
+          { id: 4, name: "Webstorm : app" },
+        ],
+      },
+    ],
   }),
+  methods: {
+    deleteItem(item) {
+      const index = this.displayItems.indexOf(item);
+      window.confirm("本当に削除しますか？") &&
+        this.displayItems.splice(index, 1);
+    },
+  },
 };
 </script>
 
