@@ -5,7 +5,12 @@
         <h3>サイドメニュー</h3>
       </div>
       <v-card>
-        <v-treeview selectable :items="items"> </v-treeview>
+        <v-treeview
+          selectable　return-object
+          open-all　v-model="displayItems"
+          :items="items"
+        >
+        </v-treeview>
       </v-card>
     </v-col>
     <v-col cols="8">
